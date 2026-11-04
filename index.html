@@ -1,0 +1,3093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Interactive Lesson: The Power of Forever</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alphagen: {
+                            purple: '#5E48C4',
+                            purpleDark: '#4A3AAD',
+                            purpleMid: '#7B6ED4',
+                            purplePale: '#EAE7FE',
+                            purpleGhost: '#F5F4FF',
+                            yellow: '#FFD071',
+                            yellowDark: '#E6B84A',
+                            nearBlack: '#1A1A1A',
+                            lightGrey: '#F2F2F4',
+                            cyan: '#59E4FB',
+                            cyanDark: '#055F6E',
+                            coral: '#ED5661',
+                            coralDark: '#993040'
+                        },
+                        brand: {
+                            purple: '#5E48C4',
+                            purpleDark: '#4A3AAD',
+                            purpleMid: '#7B6ED4',
+                            purplePale: '#EAE7FE',
+                            purpleGhost: '#F5F4FF',
+                            yellow: '#FFD071',
+                            yellowDark: '#E6B84A',
+                            nearBlack: '#1A1A1A',
+                            lightGrey: '#F2F2F4',
+                            cyan: '#59E4FB',
+                            cyanDark: '#055F6E',
+                            coral: '#ED5661',
+                            coralDark: '#993040'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        mono: ['Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F5F4FF;
+            color: #1A1A1A;
+            user-select: none;
+        }
+
+        .yellow-highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        .yellow-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #FFD071;
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* =========================
+           CEILING FAN
+        ========================= */
+
+        .fan-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fan-center {
+            width: 44px;
+            height: 44px;
+            background: #5E48C4;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(94,72,196,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .fan-blades {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fan-blade {
+            position: absolute;
+            width: 110px;
+            height: 18px;
+            background: #7B6ED4;
+            border-radius: 9px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .fan-blade:nth-child(2) {
+            transform: rotate(90deg);
+        }
+
+        .spinning {
+            animation: spinFan 0.8s linear infinite;
+        }
+
+        @keyframes spinFan {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================
+           SCRATCH BLOCKS
+        ========================= */
+
+        .scratch-block {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 6px 11px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 7px;
+            box-shadow:
+                inset 0 -3px rgba(0,0,0,0.12),
+                0 3px 5px rgba(0,0,0,0.12);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .scratch-block:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+        }
+
+        .scratch-yellow {
+            background: #FFBF00;
+        }
+
+        .scratch-orange {
+            background: #FFAB19;
+        }
+
+        .scratch-blue {
+            background: #4C97FF;
+        }
+
+        .scratch-cyan {
+            background: #5CB1D6;
+        }
+
+        .scratch-purple {
+            background: #9966FF;
+        }
+
+        .scratch-green {
+            background: #59A942;
+        }
+
+        .scratch-red {
+            background: #D94F4F;
+        }
+
+        .scratch-c-block {
+            background: #FFAB19;
+            border-radius: 7px;
+            padding: 8px 10px;
+        }
+
+        .scratch-c-inner {
+            background: white;
+            border-radius: 6px;
+            padding: 6px;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .scratch-input {
+            background: white;
+            color: #1A1A1A;
+            border-radius: 3px;
+            padding: 1px 5px;
+            margin: 0 2px;
+            font-weight: bold;
+        }
+
+        .scratch-boolean {
+            background: #5CB1D6;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 5px;
+        }
+
+        .scratch-variable {
+            background: #FFBF00;
+            color: #1A1A1A;
+            border-radius: 5px;
+            padding: 2px 5px;
+        }
+
+        /* =========================
+           SLIDE 3
+        ========================= */
+
+        .loop-stage {
+            position: relative;
+            height: 210px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #F5F4FF;
+            border: 2px dashed #7B6ED4;
+        }
+
+        .loop-ball {
+            position: absolute;
+            font-size: 28px;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.12s ease;
+        }
+
+        .player-paddle {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 60px;
+            background: #5E48C4;
+            border-radius: 7px;
+        }
+
+        .goal-zone {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 42px;
+            height: 100%;
+            border-left: 2px dashed #59A942;
+            background: rgba(89,169,66,0.08);
+        }
+
+        /* =========================
+           SLIDE 4 GAME
+        ========================= */
+
+        .game-stage {
+            position: relative;
+            height: 260px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #F5F4FF;
+            border: 2px dashed #7B6ED4;
+        }
+
+        .game-player {
+            position: absolute;
+            font-size: 31px;
+            left: 50px;
+            top: 110px;
+            z-index: 5;
+            transition: left 0.06s linear, top 0.06s linear;
+        }
+
+        .game-enemy {
+            position: absolute;
+            font-size: 31px;
+            left: 280px;
+            top: 50px;
+            z-index: 4;
+            transition: left 0.08s linear, top 0.08s linear;
+        }
+
+        .game-border-label {
+            position: absolute;
+            font-size: 9px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .controls-box {
+            background: white;
+            border: 1px solid #EAE7FE;
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .key-btn {
+            width: 34px;
+            height: 28px;
+            border-radius: 6px;
+            background: #F2F2F4;
+            border: 1px solid #D8D8DD;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .key-btn:hover {
+            background: #EAE7FE;
+        }
+
+        .flow-block {
+            transition: all 0.25s ease;
+        }
+
+        .flow-active {
+            transform: scale(1.035);
+            filter: brightness(1.1);
+            box-shadow:
+                0 0 0 3px rgba(255,208,113,0.9),
+                0 6px 15px rgba(0,0,0,0.18);
+        }
+
+        .stop-block {
+            background: #D94F4F;
+            color: white;
+            border-radius: 7px;
+            padding: 7px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow:
+                inset 0 -3px rgba(0,0,0,0.15),
+                0 3px 5px rgba(0,0,0,0.12);
+        }
+
+        .life {
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .life-lost {
+            opacity: 0.18;
+            transform: scale(0.8);
+        }
+
+        /* =========================
+           QUIZ
+        ========================= */
+
+        .quiz-feedback {
+            min-height: 28px;
+            transition: all 0.2s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1A1A1A;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5E48C4;
+            border-radius: 4px;
+        }
+
+        /* =========================
+           SLIDE 3 CODE CARDS
+        ========================= */
+
+        .code-example-card {
+            background: #FAFAFF;
+            border: 2px solid #EAE7FE;
+            border-radius: 14px;
+            padding: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .code-example-card:hover {
+            border-color: #7B6ED4;
+            box-shadow: 0 5px 14px rgba(94,72,196,0.10);
+        }
+
+        .example-number {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #5E48C4;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        /* SLIDE 5: SCRATCH BLOCK QUIZ */
+
+.scratch-quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    justify-items: center;
+    align-items: center;
+    margin: 16px auto;
+}
+
+.scratch-quiz-option {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: max-content;
+    max-width: 100%;
+    border: none;
+    background: transparent;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 9px;
+    transition: transform 0.15s ease;
+}
+
+.scratch-quiz-option:hover {
+    transform: translateY(-2px);
+}
+
+.scratch-quiz-option.correct {
+    outline: 3px solid #22A447;
+    outline-offset: 2px;
+}
+
+.scratch-quiz-option.wrong {
+    outline: 3px solid #ED5661;
+    outline-offset: 2px;
+}
+
+.quiz-scratch-c {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 140px;
+    padding: 8px 9px;
+    background: #FFAB19;
+    color: white;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: inset 0 -3px rgba(0,0,0,0.15);
+}
+
+.quiz-scratch-inner {
+    min-height: 30px;
+    margin: 7px 0 4px 13px;
+    padding: 5px;
+    border-radius: 5px;
+    background: white;
+}
+
+.quiz-scratch-bottom {
+    height: 9px;
+    background: #FFAB19;
+    border-radius: 0 0 5px 5px;
+}
+
+.quiz-scratch-motion {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 9px;
+    background: #4C97FF;
+    color: white;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.quiz-scratch-input {
+    background: white;
+    color: #222;
+    border-radius: 12px;
+    padding: 2px 7px;
+    font-size: 11px;
+}
+
+@media (max-width: 480px) {
+    .scratch-quiz-options {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+
+<body class="min-h-screen w-screen flex flex-col bg-brand-purpleGhost">
+
+    <!-- =========================================================
+         ALPHAGEN BANNER
+    ========================================================= -->
+
+    <div class="w-full px-4 pt-4">
+        <header class="w-full bg-alphagen-purple px-4 py-3.5 flex flex-wrap items-center justify-between gap-3 text-white shadow-md rounded-2xl">
+
+            <div class="flex items-center gap-3">
+
+                <a href="#"
+                   class="bg-alphagen-yellow hover:bg-alphagen-yellowDark text-alphagen-nearBlack px-4 py-2 rounded-xl font-extrabold text-xs md:text-sm shadow-sm transition-all flex items-center gap-2">
+
+                    <span class="tracking-wide">
+                        ALPHAGEN LEARNING
+                    </span>
+
+                </a>
+
+                <span class="font-extrabold text-base md:text-xl tracking-tight text-white">
+                    Scratch - Game Based Learning
+                </span>
+
+            </div>
+
+            <div class="flex items-center gap-3">
+
+                <button onclick="toggleAudio()"
+                        id="audio-btn"
+                        class="bg-alphagen-purpleDark hover:bg-alphagen-purpleMid text-white p-2 rounded-lg transition-all"
+                        title="Toggle Sound">
+
+                    <i class="fa-solid fa-volume-high text-base"
+                       id="sound-icon">
+                    </i>
+
+                </button>
+
+            </div>
+
+        </header>
+    </div>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="flex-1 relative flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+
+
+        <!-- =====================================================
+             SLIDE 1
+        ===================================================== -->
+
+        <section id="slide-1"
+                 class="slide active flex-col items-center justify-center max-w-3xl mx-auto w-full">
+
+            <div class="w-24 h-24 sm:w-32 sm:h-32 bg-brand-purplePale rounded-full flex items-center justify-center mb-6 shadow-inner animate-bounce">
+
+                <span class="text-5xl sm:text-6xl">
+                    🔄
+                </span>
+
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-brand-nearBlack mb-4 leading-tight text-center">
+
+                The Magic of the
+
+                <span class="text-brand-purple yellow-highlight">
+                    Forever Block!
+                </span>
+
+            </h1>
+
+           
+
+            <button onclick="nextSlide()"
+                    class="bg-brand-yellow hover:bg-brand-yellowDark text-brand-nearBlack font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-200">
+
+                Let's Explore!
+
+            </button>
+
+        </section>
+
+
+        <!-- =====================================================
+             SLIDE 2
+        ===================================================== -->
+
+        <section id="slide-2"
+                 class="slide flex-col items-center justify-center max-w-4xl mx-auto w-full">
+
+            <div class="text-center mb-4">
+
+                <span class="text-brand-purple font-semibold text-xs uppercase tracking-widest">
+                    Real Life Analogy
+                </span>
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-brand-nearBlack">
+                    Ceiling Fan at Home
+                </h2>
+
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border-2 border-brand-purplePale shadow-md w-full max-w-2xl">
+
+                <p class="text-sm text-gray-600 text-center mb-4">
+                    It keeps spinning until someone switches it off.
+                </p>
+
+                <div class="relative bg-brand-purpleGhost rounded-2xl border border-brand-purpleMid/30 h-48 overflow-hidden flex flex-col items-center justify-center">
+
+                    <div class="fan-container">
+
+                        <div id="fan-blades-elem"
+                             class="fan-blades">
+
+                            <div class="fan-blade"></div>
+                            <div class="fan-blade"></div>
+
+                        </div>
+
+                        <div class="fan-center">
+                            🌀
+                        </div>
+
+                    </div>
+
+                    <div id="fan-status-text"
+                         class="absolute bottom-3 text-xs font-bold text-brand-purple">
+
+                        Status: OFF
+
+                    </div>
+
+                </div>
+
+                <div class="flex justify-center gap-3 mt-4">
+
+                    <button onclick="toggleFan(true)"
+                            class="bg-brand-purple hover:bg-brand-purpleDark text-white font-bold px-5 py-2 rounded-xl text-xs">
+
+                        Switch ON
+
+                    </button>
+
+                    <button onclick="toggleFan(false)"
+                            class="bg-brand-coral hover:bg-brand-coralDark text-white font-bold px-5 py-2 rounded-xl text-xs">
+
+                        Switch OFF
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SLIDE 3
+        ===================================================== -->
+
+        <section id="slide-3"
+                 class="slide flex-col items-center justify-center max-w-5xl mx-auto w-full">
+
+            <div class="text-center mb-3">
+
+                <span class="text-brand-purple font-semibold text-xs uppercase tracking-widest">
+                    Interactive Code Builder
+                </span>
+
+                <h2 class="text-xl sm:text-2xl font-bold text-brand-nearBlack">
+                    Three Ways to Use Forever
+                </h2>
+
+                <p class="text-xs text-gray-500 mt-1">
+                    Each box is a different program.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl">
+
+
+                <!-- =================================================
+                     EXAMPLE 1
+                ================================================= -->
+
+                <div class="code-example-card">
+
+                    <div class="flex items-center gap-2 mb-3">
+
+                        <div class="example-number">
+                            1
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-extrabold text-brand-nearBlack">
+                                Keep Moving
+                            </h3>
+
+                            <p class="text-[9px] text-gray-500">
+                                Bounce at the edge
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <button onclick="runSimScenario('bounce')"
+                            class="text-left w-full">
+
+                        <div class="scratch-c-block w-full">
+
+                            <div class="text-white font-bold text-[11px]">
+                                forever
+                            </div>
+
+                            <div class="scratch-c-inner">
+
+                                <div class="scratch-block scratch-blue w-full text-[10px]">
+
+                                    move
+                                    <span class="scratch-input">
+                                        10
+                                    </span>
+                                    steps
+
+                                </div>
+
+                                <div class="scratch-block scratch-blue w-full text-[10px] mt-2">
+
+                                    if on edge, bounce
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </button>
+
+                    <p class="text-[9px] text-gray-500 mt-3 text-center">
+                        Click to run this example
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     EXAMPLE 2
+                ================================================= -->
+
+                <div class="code-example-card">
+
+                    <div class="flex items-center gap-2 mb-3">
+
+                        <div class="example-number">
+                            2
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-extrabold text-brand-nearBlack">
+                                Keep Checking
+                            </h3>
+
+                            <p class="text-[9px] text-gray-500">
+                                Check for touching
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <button onclick="runSimScenario('touching')"
+                            class="text-left w-full">
+
+                        <div class="scratch-c-block w-full">
+
+                            <div class="text-white font-bold text-[11px]">
+                                forever
+                            </div>
+
+                            <div class="scratch-c-inner">
+
+                                <div class="text-[10px] font-bold text-brand-nearBlack mb-1">
+
+                                    if
+
+                                    <span class="scratch-boolean">
+                                        touching player?
+                                    </span>
+
+                                    then
+
+                                </div>
+
+                                <div class="scratch-block scratch-purple w-full text-[10px]">
+
+                                    change score by
+                                    <span class="scratch-input">
+                                        1
+                                    </span>
+
+                                </div>
+
+                                <div class="scratch-block scratch-blue w-full text-[10px] mt-2">
+
+                                    go to random position
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </button>
+
+                    <p class="text-[9px] text-gray-500 mt-3 text-center">
+                        Click to run this example
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     EXAMPLE 3
+                ================================================= -->
+
+                <div class="code-example-card">
+
+                    <div class="flex items-center gap-2 mb-3">
+
+                        <div class="example-number">
+                            3
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-extrabold text-brand-nearBlack">
+                                Keep Watching
+                            </h3>
+
+                            <p class="text-[9px] text-gray-500">
+                                Watch for a key press
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <button onclick="runSimScenario('key')"
+                            class="text-left w-full">
+
+                        <div class="scratch-c-block w-full">
+
+                            <div class="text-white font-bold text-[11px]">
+                                forever
+                            </div>
+
+                            <div class="scratch-c-inner">
+
+                                <div class="text-[10px] font-bold text-brand-nearBlack mb-1">
+
+                                    if
+
+                                    <span class="scratch-boolean">
+                                        right arrow pressed?
+                                    </span>
+
+                                    then
+
+                                </div>
+
+                                <div class="scratch-block scratch-blue w-full text-[10px]">
+
+                                    change x by
+                                    <span class="scratch-input">
+                                        10
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </button>
+
+                    <p class="text-[9px] text-gray-500 mt-3 text-center">
+                        Click, then press →
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 STAGE
+            ===================================================== -->
+
+            <div class="bg-white p-4 rounded-2xl border-2 border-brand-purplePale shadow-sm w-full max-w-5xl mt-4">
+
+                <div class="flex justify-between items-center mb-2">
+
+                    <span class="text-xs font-bold text-gray-500">
+                        Stage
+                    </span>
+
+                    <span class="text-[9px] text-gray-400">
+                        Watch the selected code run
+                    </span>
+
+                </div>
+
+                <div id="sim-stage"
+                     class="loop-stage">
+
+                    <div class="goal-zone"></div>
+
+                    <div id="sim-ball"
+                         class="loop-ball">
+                        ⚽
+                    </div>
+
+                    <div id="sim-paddle"
+                         class="player-paddle">
+                    </div>
+
+                    <span id="sim-message"
+                          class="absolute inset-0 flex items-center justify-center text-xs text-gray-400 font-semibold p-4 text-center pointer-events-none">
+
+                        Choose a program.
+
+                    </span>
+
+                    <div id="score-display"
+                         class="absolute top-2 left-2 text-xs font-bold text-brand-purple">
+
+                        Score: 0
+
+                    </div>
+
+                </div>
+
+                <div id="sim-status"
+                     class="mt-2.5 text-[11px] font-bold text-brand-purple min-h-[18px] text-center">
+
+                    Ready.
+
+                </div>
+
+                <div class="flex gap-2 mt-2">
+
+                    <button onclick="resetSim()"
+                            class="flex-1 bg-gray-100 hover:bg-gray-200 text-brand-nearBlack font-bold text-xs p-2 rounded-xl">
+
+                        Reset
+
+                    </button>
+
+                    <button onclick="triggerStopAll()"
+                            class="flex-1 bg-brand-coral hover:bg-brand-coralDark text-white font-bold text-xs p-2 rounded-xl">
+
+                        stop all
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SLIDE 4
+        ===================================================== -->
+
+        <section id="slide-4"
+                 class="slide flex-col items-center justify-center max-w-5xl mx-auto w-full">
+
+            <div class="text-center mb-3">
+
+                <span class="text-brand-purple font-semibold text-xs uppercase tracking-widest">
+                    Interactive Game
+                </span>
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-brand-nearBlack">
+                    Forever + Stop All
+                </h2>
+
+                <p class="text-xs text-gray-500 mt-1">
+                    The enemy keeps chasing until the player loses all lives.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-5xl">
+
+
+                <!-- ================= CODE ================= -->
+
+                <div class="bg-white p-4 rounded-2xl border-2 border-brand-purplePale shadow-sm">
+
+                    <h3 class="text-xs font-bold text-brand-purple mb-3">
+                        Scratch Code Flow
+                    </h3>
+
+                    <div class="flex flex-col items-center gap-1">
+
+                        <div id="flow-start"
+                             class="flow-block scratch-block scratch-yellow w-64 justify-center">
+
+                            when green flag clicked
+
+                        </div>
+
+                        <div class="text-gray-400 font-bold">
+                            ↓
+                        </div>
+
+                        <div id="flow-forever"
+                             class="flow-block scratch-c-block w-72">
+
+                            <div class="text-white font-bold text-[11px]">
+                                forever
+                            </div>
+
+                            <div class="scratch-c-inner">
+
+                                <div id="flow-chase"
+                                     class="flow-block scratch-block scratch-blue w-full text-[10px]">
+
+                                    point towards player
+
+                                </div>
+
+                                <div id="flow-move-enemy"
+                                     class="flow-block scratch-block scratch-blue w-full text-[10px] mt-2">
+
+                                    move
+                                    <span class="scratch-input">
+                                        3
+                                    </span>
+                                    steps
+
+                                </div>
+
+                                <div id="flow-if-touch"
+                                     class="flow-block border-2 border-brand-purple rounded-lg p-2 mt-2">
+
+                                    <div class="text-[10px] font-bold text-brand-nearBlack mb-2">
+
+                                        if
+
+                                        <span class="scratch-boolean">
+                                            touching player?
+                                        </span>
+
+                                        then
+
+                                    </div>
+
+                                    <div id="flow-life"
+                                         class="flow-block scratch-block scratch-purple w-full text-[10px]">
+
+                                        change lives by
+                                        <span class="scratch-input">
+                                            -1
+                                        </span>
+
+                                    </div>
+
+                                    <div id="flow-respawn"
+                                         class="flow-block scratch-block scratch-blue w-full text-[10px] mt-2">
+
+                                        go to random position
+
+                                    </div>
+
+                                    <div id="flow-if-zero"
+                                         class="flow-block border-2 border-brand-purple rounded-lg p-2 mt-2">
+
+                                        <div class="text-[10px] font-bold text-brand-nearBlack mb-2">
+
+                                            if
+
+                                            <span class="scratch-variable">
+                                                lives = 0
+                                            </span>
+
+                                            then
+
+                                        </div>
+
+                                        <div id="flow-stop"
+                                             class="flow-block stop-block text-center">
+
+                                            stop all
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex gap-2 mt-4">
+
+                        <button onclick="runGameStepByStep()"
+                                class="flex-1 bg-brand-purple hover:bg-brand-purpleDark text-white font-bold text-xs p-2.5 rounded-xl shadow">
+
+                            ▶ Step-by-Step
+
+                        </button>
+
+                        <button onclick="runFullGame()"
+                                class="flex-1 bg-brand-yellow hover:bg-brand-yellowDark text-brand-nearBlack font-bold text-xs p-2.5 rounded-xl shadow">
+
+                            ▶ Run Game
+
+                        </button>
+
+                    </div>
+
+
+                    <button onclick="resetGame()"
+                            class="w-full mt-2 bg-gray-100 hover:bg-gray-200 text-brand-nearBlack font-bold text-xs p-2 rounded-xl">
+
+                        Reset Game
+
+                    </button>
+
+
+                    <div class="mt-3 bg-brand-purpleGhost rounded-xl p-2 text-[10px] text-gray-600 text-center">
+
+                        Move:
+                        <b>Arrow Keys</b>
+                        or
+                        <b>W A S D</b>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= GAME ================= -->
+
+                <div class="bg-white p-4 rounded-2xl border-2 border-brand-purplePale shadow-sm">
+
+                    <div class="flex justify-between items-center mb-2">
+
+                        <span class="text-xs font-bold text-gray-500">
+                            Chase Game
+                        </span>
+
+                        <div id="lives-display"
+                             class="flex gap-1">
+
+                            <span class="life text-lg">
+                                ❤️
+                            </span>
+
+                            <span class="life text-lg">
+                                ❤️
+                            </span>
+
+                            <span class="life text-lg">
+                                ❤️
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="game-stage"
+                         class="game-stage">
+
+                        <div class="game-border-label"
+                             style="left:8px;top:6px;">
+
+                            MOVE THE PLAYER
+
+                        </div>
+
+                        <div id="game-player"
+                             class="game-player">
+
+                            🧑
+
+                        </div>
+
+                        <div id="game-enemy"
+                             class="game-enemy">
+
+                            👾
+
+                        </div>
+
+                        <div id="game-message"
+                             class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-400 text-center p-5 pointer-events-none">
+
+                            Click "Run Game", then move the player!
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="controls-box mt-3 flex flex-col items-center gap-1">
+
+                        <button class="key-btn"
+                                onclick="movePlayer('up')">
+
+                            ↑
+
+                        </button>
+
+                        <div class="flex gap-1">
+
+                            <button class="key-btn"
+                                    onclick="movePlayer('left')">
+
+                                ←
+
+                            </button>
+
+                            <button class="key-btn"
+                                    onclick="movePlayer('down')">
+
+                                ↓
+
+                            </button>
+
+                            <button class="key-btn"
+                                    onclick="movePlayer('right')">
+
+                                →
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="game-status"
+                         class="text-center text-xs font-bold text-brand-purple mt-2 min-h-[18px]">
+
+                        Lives: 3
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SLIDE 5
+        ===================================================== -->
+
+       <!-- =====================================================
+     SLIDE 5: BRAIN TEST
+===================================================== -->
+
+<section id="slide-5"
+         class="slide flex-col items-center justify-center max-w-4xl mx-auto w-full">
+
+    <div class="text-center mb-4">
+
+        <span class="text-brand-purple font-semibold text-xs uppercase tracking-widest">
+            Brain Test
+        </span>
+
+        <h2 class="text-2xl sm:text-3xl font-bold text-brand-nearBlack">
+            Check Your Understanding
+        </h2>
+
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border-2 border-brand-purplePale shadow-sm w-full text-center max-w-xl">
+
+        <h3 class="font-bold text-sm sm:text-base text-brand-nearBlack mb-4">
+            Which Scratch program keeps moving the sprite until we stop it?
+        </h3>
+
+        <div class="scratch-quiz-options">
+
+            <!-- OPTION 1: REPEAT -->
+            <button class="scratch-quiz-option"
+                    onclick="checkQuiz(this, false)"
+                    aria-label="Repeat 10 times, move 10 steps">
+
+                <div class="quiz-scratch-c">
+
+                    <span>repeat <span class="quiz-scratch-input">10</span></span>
+
+                    <div class="quiz-scratch-inner">
+
+                        <div class="quiz-scratch-motion">
+                            move
+                            <span class="quiz-scratch-input">10</span>
+                            steps
+                        </div>
+
+                    </div>
+
+                    <div class="quiz-scratch-bottom"></div>
+
+                </div>
+
+            </button>
+
+            <!-- OPTION 2: FOREVER - CORRECT -->
+            <button class="scratch-quiz-option"
+                    onclick="checkQuiz(this, true)"
+                    aria-label="Forever, move 10 steps">
+
+                <div class="quiz-scratch-c">
+
+                    <span>forever</span>
+
+                    <div class="quiz-scratch-inner">
+
+                        <div class="quiz-scratch-motion">
+                            move
+                            <span class="quiz-scratch-input">10</span>
+                            steps
+                        </div>
+
+                    </div>
+
+                    <div class="quiz-scratch-bottom"></div>
+
+                </div>
+
+            </button>
+
+            <!-- OPTION 3: MOVE -->
+            <button class="scratch-quiz-option"
+                    onclick="checkQuiz(this, false)"
+                    aria-label="Move 10 steps">
+
+                <div class="quiz-scratch-motion">
+                    move
+                    <span class="quiz-scratch-input">10</span>
+                    steps
+                </div>
+
+            </button>
+
+            <!-- OPTION 4: WAIT -->
+            <button class="scratch-quiz-option"
+                    onclick="checkQuiz(this, false)"
+                    aria-label="Wait 1 second">
+
+                <div class="scratch-block scratch-orange">
+                    wait
+                    <span class="scratch-input">1</span>
+                    seconds
+                </div>
+
+            </button>
+
+        </div>
+
+        <!-- FEEDBACK -->
+        <div id="quiz-feedback"
+             class="quiz-feedback mt-4 text-xs font-bold"
+             aria-live="polite">
+        </div>
+
+        <!-- FINISH LESSON -->
+        <button id="finish-lesson-btn"
+                onclick="finishLesson()"
+                class="hidden mt-5 bg-brand-yellow hover:bg-brand-yellowDark text-brand-nearBlack font-bold text-sm px-6 py-3 rounded-xl shadow-md transition">
+
+            <i class="fa-solid fa-flag-checkered mr-2"></i>
+            Finish Lesson
+
+        </button>
+
+        <!-- COMPLETION MESSAGE -->
+        <div id="lesson-complete-message"
+             class="hidden mt-5 bg-brand-purpleGhost border border-brand-purplePale rounded-xl p-4">
+
+            <h3 class="text-brand-purple font-extrabold text-lg">
+                Excellent Work!
+            </h3>
+
+            <p class="text-xs text-gray-600 mt-2">
+                You've completed the Forever Block lesson!
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="bg-white border-t border-gray-200 px-6 py-3 flex justify-between items-center z-10">
+
+        <button id="btn-prev"
+                onclick="prevSlide()"
+                class="bg-gray-100 hover:bg-gray-200 text-brand-nearBlack font-bold px-4 py-2 rounded-xl text-xs sm:text-sm">
+
+            ⬅️ Previous
+
+        </button>
+
+
+        
+        <button id="btn-next"
+                onclick="nextSlide()"
+                class="bg-brand-purple hover:bg-brand-purpleDark text-white font-bold px-5 py-2 rounded-xl text-xs sm:text-sm">
+
+            Next ➡
+
+        </button>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        let currentSlide = 1;
+
+        const totalSlides = 5;
+
+        let audioEnabled = true;
+
+
+        /* =========================================================
+           AUDIO
+        ========================================================= */
+
+        const audioCtx =
+            new (window.AudioContext || window.webkitAudioContext)();
+
+
+        function playSessionSound() {
+
+            if (!audioEnabled) {
+                return;
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc =
+                audioCtx.createOscillator();
+
+            const gain =
+                audioCtx.createGain();
+
+            osc.connect(gain);
+
+            gain.connect(
+                audioCtx.destination
+            );
+
+            osc.type = 'triangle';
+
+            osc.frequency.setValueAtTime(
+                400,
+                audioCtx.currentTime
+            );
+
+            gain.gain.setValueAtTime(
+                0.04,
+                audioCtx.currentTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.01,
+                audioCtx.currentTime + 0.05
+            );
+
+            osc.start();
+
+            osc.stop(
+                audioCtx.currentTime + 0.05
+            );
+        }
+
+
+        function toggleAudio() {
+
+            audioEnabled =
+                !audioEnabled;
+
+            const icon =
+                document.getElementById(
+                    'sound-icon'
+                );
+
+            const button =
+                document.getElementById(
+                    'audio-btn'
+                );
+
+            if (audioEnabled) {
+
+                icon.className =
+                    'fa-solid fa-volume-high text-base';
+
+                button.title =
+                    'Mute Sound';
+
+                playSessionSound();
+
+            } else {
+
+                icon.className =
+                    'fa-solid fa-volume-xmark text-base';
+
+                button.title =
+                    'Turn Sound On';
+
+            }
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        function updateSlide() {
+
+            document.querySelectorAll('.slide')
+                .forEach((slide, index) => {
+
+                    slide.classList.remove(
+                        'active'
+                    );
+
+                    if (
+                        index + 1 === currentSlide
+                    ) {
+
+                        slide.classList.add(
+                            'active'
+                        );
+
+                    }
+
+                });
+
+
+            document.getElementById(
+                'current-slide-num'
+            ).innerText =
+                currentSlide;
+
+
+            document.getElementById(
+                'slide-jump'
+            ).value =
+                currentSlide;
+
+
+            document.getElementById(
+                'btn-prev'
+            ).style.visibility =
+                currentSlide === 1
+                    ? 'hidden'
+                    : 'visible';
+
+
+            document.getElementById(
+                'btn-next'
+            ).style.visibility =
+                currentSlide === totalSlides
+                    ? 'hidden'
+                    : 'visible';
+        }
+
+
+        function nextSlide() {
+
+            if (
+                currentSlide < totalSlides
+            ) {
+
+                playSessionSound();
+
+                currentSlide++;
+
+                updateSlide();
+
+            }
+
+        }
+
+
+        function prevSlide() {
+
+            if (
+                currentSlide > 1
+            ) {
+
+                playSessionSound();
+
+                currentSlide--;
+
+                updateSlide();
+
+            }
+
+        }
+
+
+        function jumpToSlide(num) {
+
+            playSessionSound();
+
+            currentSlide =
+                parseInt(num);
+
+            updateSlide();
+        }
+
+
+        /* =========================================================
+           SLIDE 2
+        ========================================================= */
+
+        function toggleFan(turnOn) {
+
+            playSessionSound();
+
+            const blades =
+                document.getElementById(
+                    'fan-blades-elem'
+                );
+
+            const status =
+                document.getElementById(
+                    'fan-status-text'
+                );
+
+
+            if (turnOn) {
+
+                blades.classList.add(
+                    'spinning'
+                );
+
+                status.innerText =
+                    "Status: Running forever.";
+
+            } else {
+
+                blades.classList.remove(
+                    'spinning'
+                );
+
+                status.innerText =
+                    "Status: Stopped.";
+
+            }
+        }
+
+
+        /* =========================================================
+           SLIDE 3
+        ========================================================= */
+
+        let simTimer = null;
+
+        let activeSimType = null;
+
+        let ballX = 25;
+
+        let ballDirection = 1;
+
+        let simScore = 0;
+
+
+        function randomBallPosition() {
+
+            const stage =
+                document.getElementById(
+                    'sim-stage'
+                );
+
+            const maxX =
+                stage.clientWidth - 55;
+
+            return 20 +
+                Math.random() *
+                Math.max(20, maxX - 20);
+        }
+
+
+        function runSimScenario(type) {
+
+            playSessionSound();
+
+            resetSim(false);
+
+            activeSimType =
+                type;
+
+            // Show the player sprite for the touching example only.
+            if (type === 'touching') {
+                const paddle = document.getElementById('sim-paddle');
+                paddle.textContent = '🧑';
+                paddle.style.background = 'transparent';
+                paddle.style.fontSize = '32px';
+                paddle.style.width = '38px';
+                paddle.style.height = '44px';
+                const stage = document.getElementById('sim-stage');
+                paddle.style.right = Math.min(350, Math.max(25, stage.clientWidth - 100)) + 'px';
+            }
+
+
+            const ball =
+                document.getElementById(
+                    'sim-ball'
+                );
+
+            const message =
+                document.getElementById(
+                    'sim-message'
+                );
+
+            const status =
+                document.getElementById(
+                    'sim-status'
+                );
+
+
+            message.style.display =
+                'none';
+
+
+            /* =========================
+               EXAMPLE 1
+            ========================= */
+
+            if (
+                type === 'bounce'
+            ) {
+
+                status.innerText =
+                    "Move 10 → check edge → bounce → repeat.";
+
+                ballX = 20;
+
+                ballDirection = 1;
+
+
+                simTimer =
+                    setInterval(() => {
+
+                        ballX +=
+                            5 *
+                            ballDirection;
+
+
+                        const stage =
+                            document.getElementById(
+                                'sim-stage'
+                            );
+
+                        const maxX =
+                            stage.clientWidth - 48;
+
+
+                        if (
+                            ballX >= maxX ||
+                            ballX <= 20
+                        ) {
+
+                            ballDirection *= -1;
+
+                            status.innerText =
+                                "On edge → bounce!";
+
+                        } else {
+
+                            status.innerText =
+                                "Forever → move 10 → check edge.";
+
+                        }
+
+
+                        ball.style.left =
+                            ballX + 'px';
+
+                    }, 70);
+
+            }
+
+
+            /* =========================
+   EXAMPLE 2
+========================= */
+
+else if (type === 'touching') {
+
+    status.innerText =
+        "Forever checks for touching.";
+
+    simScore = 0;
+
+    document.getElementById(
+        'score-display'
+    ).innerText = "Score: 0";
+
+    ballX = 30;
+    ballDirection = 1;
+
+    simTimer = setInterval(() => {
+
+        ballX += 4;
+
+        const stage =
+            document.getElementById('sim-stage');
+
+        const player =
+            document.getElementById('sim-paddle');
+        
+
+        const stageRect =
+            stage.getBoundingClientRect();
+
+        const playerRect =
+            player.getBoundingClientRect();
+
+        const ballRect =
+            ball.getBoundingClientRect();
+
+        // Detect the player's actual position
+        const playerX =
+            playerRect.left - stageRect.left;
+
+        ball.style.left = ballX + 'px';
+
+        // Check whether the ball touches the player
+        if (
+            ballX + ballRect.width >= playerX
+        ) {
+
+            simScore++;
+
+            document.getElementById(
+                'score-display'
+            ).innerText =
+                "Score: " + simScore;
+
+            status.innerText =
+                "Touching → score +1 → new position!";
+
+            // Restart the ball to the left of the player
+            ballX =
+                20 +
+                Math.random() *
+                Math.max(0, playerX - 100);
+
+            ball.style.left = ballX + 'px';
+
+            ball.style.transform =
+                "translateY(-50%) scale(1.25)";
+
+            setTimeout(() => {
+
+                ball.style.transform =
+                    "translateY(-50%) scale(1)";
+
+            }, 150);
+        }
+
+    }, 60);
+}
+
+            /* =========================
+               EXAMPLE 3
+            ========================= */
+
+            else if (
+                type === 'key'
+            ) {
+
+                status.innerText =
+                    "Forever keeps checking for →.";
+
+                ballX = 20;
+
+                ball.style.left =
+                    ballX + 'px';
+
+            }
+        }
+
+
+        /* =========================================================
+           KEYBOARD
+        ========================================================= */
+
+        window.addEventListener(
+            'keydown',
+            function(e) {
+
+                /* Slide 3 */
+
+                if (
+                    currentSlide === 3 &&
+                    activeSimType === 'key'
+                ) {
+
+                    if (
+                        e.code === 'ArrowRight'
+                    ) {
+
+                        playSessionSound();
+
+                        const stage =
+                            document.getElementById(
+                                'sim-stage'
+                            );
+
+                        const maxX =
+                            stage.clientWidth - 48;
+
+
+                        ballX =
+                            Math.min(
+                                ballX + 18,
+                                maxX
+                            );
+
+
+                        document.getElementById(
+                            'sim-ball'
+                        ).style.left =
+                            ballX + 'px';
+
+
+                        document.getElementById(
+                            'sim-status'
+                        ).innerText =
+                            "→ pressed → change x by 10";
+
+
+                        if (
+                            ballX >= maxX
+                        ) {
+
+                            confetti({
+                                particleCount: 40,
+                                spread: 50,
+                                origin: {
+                                    y: 0.6
+                                }
+                            });
+
+                        }
+
+                    }
+
+                }
+
+
+                /* Slide 4 */
+
+                if (
+                    currentSlide === 4
+                ) {
+
+                    if (
+                        e.code === 'ArrowUp' ||
+                        e.code === 'KeyW'
+                    ) {
+
+                        movePlayer('up');
+
+                    }
+
+                    if (
+                        e.code === 'ArrowDown' ||
+                        e.code === 'KeyS'
+                    ) {
+
+                        movePlayer('down');
+
+                    }
+
+                    if (
+                        e.code === 'ArrowLeft' ||
+                        e.code === 'KeyA'
+                    ) {
+
+                        movePlayer('left');
+
+                    }
+
+                    if (
+                        e.code === 'ArrowRight' ||
+                        e.code === 'KeyD'
+                    ) {
+
+                        movePlayer('right');
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           STOP SIM
+        ========================================================= */
+
+        function triggerStopAll() {
+
+            playSessionSound();
+
+
+            if (simTimer) {
+
+                clearInterval(
+                    simTimer
+                );
+
+                simTimer = null;
+
+            }
+
+
+            activeSimType = null;
+
+
+            document.getElementById(
+                'sim-status'
+            ).innerText =
+                "stop all → forever stopped.";
+
+
+            confetti({
+                particleCount: 45,
+                spread: 55,
+                origin: {
+                    y: 0.6
+                }
+            });
+        }
+
+
+        /* =========================================================
+           RESET SIM
+        ========================================================= */
+
+        function resetSim(
+            playSound = true
+        ) {
+
+            if (playSound) {
+                playSessionSound();
+            }
+
+
+            if (simTimer) {
+
+                clearInterval(
+                    simTimer
+                );
+
+                simTimer = null;
+
+            }
+
+
+            activeSimType = null;
+
+            // Restore the original paddle for the other examples.
+            const paddle = document.getElementById('sim-paddle');
+            paddle.textContent = '';
+            paddle.style.background = '';
+            paddle.style.fontSize = '';
+            paddle.style.width = '';
+            paddle.style.height = '';
+            paddle.style.right = '';
+
+            ballX = 20;
+
+            ballDirection = 1;
+
+            simScore = 0;
+
+
+            const ball =
+                document.getElementById(
+                    'sim-ball'
+                );
+
+
+            ball.style.left =
+                '20px';
+
+
+            ball.style.transform =
+                'translateY(-50%) scale(1)';
+
+
+            document.getElementById(
+                'score-display'
+            ).innerText =
+                'Score: 0';
+
+
+            document.getElementById(
+                'sim-status'
+            ).innerText =
+                'Ready.';
+
+
+            document.getElementById(
+                'sim-message'
+            ).style.display =
+                'flex';
+        }
+
+
+        /* =========================================================
+           SLIDE 4 GAME
+        ========================================================= */
+
+        let gameRunning = false;
+
+        let gameTimer = null;
+
+        let stepTimer = null;
+
+        let lives = 3;
+
+
+        let playerX = 50;
+
+        let playerY = 110;
+
+
+        let enemyX = 280;
+
+        let enemyY = 50;
+
+
+        function clamp(
+            value,
+            min,
+            max
+        ) {
+
+            return Math.max(
+                min,
+                Math.min(max, value)
+            );
+
+        }
+
+
+        function updatePlayer() {
+
+            const player =
+                document.getElementById(
+                    'game-player'
+                );
+
+
+            player.style.left =
+                playerX + 'px';
+
+
+            player.style.top =
+                playerY + 'px';
+        }
+
+
+        function updateEnemy() {
+
+            const enemy =
+                document.getElementById(
+                    'game-enemy'
+                );
+
+
+            enemy.style.left =
+                enemyX + 'px';
+
+
+            enemy.style.top =
+                enemyY + 'px';
+        }
+
+
+        function movePlayer(direction) {
+
+            if (!gameRunning) {
+                return;
+            }
+
+
+            const stage =
+                document.getElementById(
+                    'game-stage'
+                );
+
+
+            const maxX =
+                stage.clientWidth - 55;
+
+
+            const maxY =
+                stage.clientHeight - 55;
+
+
+            const speed = 15;
+
+
+            if (
+                direction === 'up'
+            ) {
+
+                playerY =
+                    clamp(
+                        playerY - speed,
+                        25,
+                        maxY
+                    );
+
+            }
+
+
+            if (
+                direction === 'down'
+            ) {
+
+                playerY =
+                    clamp(
+                        playerY + speed,
+                        25,
+                        maxY
+                    );
+
+            }
+
+
+            if (
+                direction === 'left'
+            ) {
+
+                playerX =
+                    clamp(
+                        playerX - speed,
+                        15,
+                        maxX
+                    );
+
+            }
+
+
+            if (
+                direction === 'right'
+            ) {
+
+                playerX =
+                    clamp(
+                        playerX + speed,
+                        15,
+                        maxX
+                    );
+
+            }
+
+
+            updatePlayer();
+        }
+
+
+        function updateLives() {
+
+            const lifeElements =
+                document.querySelectorAll(
+                    '.life'
+                );
+
+
+            lifeElements.forEach(
+                (life, index) => {
+
+                    if (
+                        index < lives
+                    ) {
+
+                        life.classList.remove(
+                            'life-lost'
+                        );
+
+                    } else {
+
+                        life.classList.add(
+                            'life-lost'
+                        );
+
+                    }
+
+                }
+            );
+
+
+            document.getElementById(
+                'game-status'
+            ).innerText =
+                "Lives: " + lives;
+        }
+
+
+        function respawnEnemy() {
+
+            const stage =
+                document.getElementById(
+                    'game-stage'
+                );
+
+
+            const maxX =
+                stage.clientWidth - 55;
+
+
+            const maxY =
+                stage.clientHeight - 55;
+
+
+            let newX;
+
+            let newY;
+
+
+            do {
+
+                newX =
+                    30 +
+                    Math.random() *
+                    Math.max(
+                        30,
+                        maxX - 30
+                    );
+
+                newY =
+                    25 +
+                    Math.random() *
+                    Math.max(
+                        30,
+                        maxY - 25
+                    );
+
+            } while (
+                Math.abs(
+                    newX - playerX
+                ) < 100 &&
+                Math.abs(
+                    newY - playerY
+                ) < 80
+            );
+
+
+            enemyX = newX;
+
+            enemyY = newY;
+
+
+            updateEnemy();
+        }
+
+
+        function checkCollision() {
+
+            const dx =
+                enemyX - playerX;
+
+            const dy =
+                enemyY - playerY;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            return distance < 38;
+        }
+
+
+        function chasePlayer() {
+
+            const dx =
+                playerX - enemyX;
+
+            const dy =
+                playerY - enemyY;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (
+                distance > 0
+            ) {
+
+                const speed = 2.3;
+
+
+                enemyX +=
+                    (
+                        dx /
+                        distance
+                    ) *
+                    speed;
+
+
+                enemyY +=
+                    (
+                        dy /
+                        distance
+                    ) *
+                    speed;
+
+            }
+
+
+            updateEnemy();
+        }
+
+
+        function handleCollision() {
+
+            lives--;
+
+            updateLives();
+
+
+            document.getElementById(
+                'game-status'
+            ).innerText =
+                "Hit! Lives: " +
+                lives;
+
+
+            respawnEnemy();
+
+
+            if (
+                lives <= 0
+            ) {
+
+                executeStopAll();
+
+            }
+
+        }
+
+
+        function executeStopAll() {
+
+            gameRunning = false;
+
+
+            if (gameTimer) {
+
+                clearInterval(
+                    gameTimer
+                );
+
+                gameTimer = null;
+
+            }
+
+
+            highlightFlow(
+                'flow-stop'
+            );
+
+
+            document.getElementById(
+                'game-message'
+            ).style.display =
+                'flex';
+
+
+            document.getElementById(
+                'game-message'
+            ).innerText =
+                "GAME OVER — stop all";
+
+
+            document.getElementById(
+                'game-status'
+            ).innerText =
+                "Lives: 0 → stop all → game stopped";
+
+
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: {
+                    y: 0.6
+                }
+            });
+
+        }
+
+
+        function highlightFlow(id) {
+
+            document.querySelectorAll(
+                '.flow-block'
+            ).forEach(
+                block => {
+
+                    block.classList.remove(
+                        'flow-active'
+                    );
+
+                }
+            );
+
+
+            const target =
+                document.getElementById(
+                    id
+                );
+
+
+            if (target) {
+
+                target.classList.add(
+                    'flow-active'
+                );
+
+            }
+
+        }
+
+
+        function runFullGame() {
+
+            resetGame(false);
+
+            playSessionSound();
+
+
+            gameRunning = true;
+
+
+            document.getElementById(
+                'game-message'
+            ).style.display =
+                'none';
+
+
+            highlightFlow(
+                'flow-start'
+            );
+
+
+            setTimeout(() => {
+
+                if (!gameRunning) {
+                    return;
+                }
+
+
+                highlightFlow(
+                    'flow-forever'
+                );
+
+
+                gameTimer =
+                    setInterval(() => {
+
+                        if (!gameRunning) {
+                            return;
+                        }
+
+
+                        highlightFlow(
+                            'flow-chase'
+                        );
+
+
+                        setTimeout(() => {
+
+                            if (!gameRunning) {
+                                return;
+                            }
+
+
+                            highlightFlow(
+                                'flow-move-enemy'
+                            );
+
+
+                            chasePlayer();
+
+
+                            if (
+                                checkCollision()
+                            ) {
+
+                                highlightFlow(
+                                    'flow-if-touch'
+                                );
+
+
+                                setTimeout(() => {
+
+                                    if (!gameRunning) {
+                                        return;
+                                    }
+
+
+                                    highlightFlow(
+                                        'flow-life'
+                                    );
+
+
+                                    handleCollision();
+
+                                }, 150);
+
+                            }
+
+                        }, 100);
+
+                    }, 120);
+
+            }, 600);
+
+        }
+
+
+        function runGameStepByStep() {
+
+            resetGame(false);
+
+            playSessionSound();
+
+
+            const steps = [
+
+                {
+                    id: 'flow-start',
+                    text: '1. Green flag starts the game.'
+                },
+
+                {
+                    id: 'flow-forever',
+                    text: '2. forever starts repeating the game logic.'
+                },
+
+                {
+                    id: 'flow-chase',
+                    text: '3. Enemy points towards the player.'
+                },
+
+                {
+                    id: 'flow-move-enemy',
+                    text: '4. Enemy moves 3 steps.'
+                },
+
+                {
+                    id: 'flow-if-touch',
+                    text: '5. Check: Is the enemy touching the player?'
+                },
+
+                {
+                    id: 'flow-life',
+                    text: '6. If yes → lives decrease by 1.'
+                },
+
+                {
+                    id: 'flow-respawn',
+                    text: '7. Enemy respawns somewhere else.'
+                },
+
+                {
+                    id: 'flow-if-zero',
+                    text: '8. Check: Are lives = 0?'
+                },
+
+                {
+                    id: 'flow-stop',
+                    text: '9. Yes → stop all ends the game.'
+                }
+
+            ];
+
+
+            let index = 0;
+
+
+            function nextStep() {
+
+                if (
+                    index >= steps.length
+                ) {
+
+                    confetti({
+                        particleCount: 60,
+                        spread: 60,
+                        origin: {
+                            y: 0.6
+                        }
+                    });
+
+                    return;
+
+                }
+
+
+                const step =
+                    steps[index];
+
+
+                highlightFlow(
+                    step.id
+                );
+
+
+                document.getElementById(
+                    'game-message'
+                ).style.display =
+                    'flex';
+
+
+                document.getElementById(
+                    'game-message'
+                ).innerText =
+                    step.text;
+
+
+                if (
+                    step.id === 'flow-life'
+                ) {
+
+                    lives =
+                        Math.max(
+                            0,
+                            lives - 1
+                        );
+
+                    updateLives();
+
+                }
+
+
+                if (
+                    step.id === 'flow-respawn'
+                ) {
+
+                    respawnEnemy();
+
+                }
+
+
+                if (
+                    step.id === 'flow-if-zero'
+                ) {
+
+                    lives = 0;
+
+                    updateLives();
+
+                }
+
+
+                index++;
+
+
+                stepTimer =
+                    setTimeout(
+                        nextStep,
+                        900
+                    );
+
+            }
+
+
+            nextStep();
+
+        }
+
+
+        function resetGame(
+            playSound = true
+        ) {
+
+            if (playSound) {
+                playSessionSound();
+            }
+
+
+            gameRunning = false;
+
+
+            if (gameTimer) {
+
+                clearInterval(
+                    gameTimer
+                );
+
+                gameTimer = null;
+
+            }
+
+
+            if (stepTimer) {
+
+                clearTimeout(
+                    stepTimer
+                );
+
+                stepTimer = null;
+
+            }
+
+
+            lives = 3;
+
+
+            playerX = 50;
+
+            playerY = 110;
+
+
+            enemyX = 280;
+
+            enemyY = 50;
+
+
+            updateLives();
+
+            updatePlayer();
+
+            updateEnemy();
+
+
+            document.getElementById(
+                'game-message'
+            ).style.display =
+                'flex';
+
+
+            document.getElementById(
+                'game-message'
+            ).innerText =
+                'Click "Run Game", then move the player!';
+
+
+            document.getElementById(
+                'game-status'
+            ).innerText =
+                'Lives: 3';
+
+
+            document.querySelectorAll(
+                '.flow-block'
+            ).forEach(
+                block => {
+
+                    block.classList.remove(
+                        'flow-active'
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           SLIDE 5 QUIZ
+        ========================================================= */
+
+        /* =========================================================
+   SLIDE 5: QUIZ
+========================================================= */
+
+let quizCompleted = false;
+
+function checkQuiz(button, isCorrect) {
+
+    playSessionSound();
+
+    const feedback = document.getElementById('quiz-feedback');
+
+    const options = document.querySelectorAll(
+        '#slide-5 .scratch-quiz-option'
+    );
+
+    options.forEach(option => {
+        option.classList.remove('correct', 'wrong');
+    });
+
+    if (isCorrect) {
+
+        button.classList.add('correct');
+
+        feedback.innerText =
+            'Correct! The Forever block keeps repeating the movement until the script is stopped.';
+
+        feedback.className =
+            'quiz-feedback mt-4 text-xs font-bold text-green-600';
+
+        document.getElementById(
+            'finish-lesson-btn'
+        ).classList.remove('hidden');
+
+        if (!quizCompleted) {
+
+            if (typeof confetti === 'function') {
+
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.65 }
+                });
+
+            }
+
+            quizCompleted = true;
+
+        }
+
+    } else {
+
+        button.classList.add('wrong');
+
+        feedback.className =
+            'quiz-feedback mt-4 text-xs font-bold text-brand-coral';
+
+        feedback.innerText =
+            'Not quite! Look for the block that repeats without a fixed number of times.';
+
+    }
+
+}
+
+
+/* =========================================================
+   FINISH LESSON
+========================================================= */
+
+function finishLesson() {
+
+    playSessionSound();
+
+    document.getElementById(
+        'lesson-complete-message'
+    ).classList.remove('hidden');
+
+    if (typeof confetti === 'function') {
+
+        confetti({
+            particleCount: 150,
+            spread: 90,
+            origin: { y: 0.65 }
+        });
+
+        setTimeout(() => {
+
+            confetti({
+                particleCount: 100,
+                spread: 100,
+                origin: { x: 0.2, y: 0.7 }
+            });
+
+            confetti({
+                particleCount: 100,
+                spread: 100,
+                origin: { x: 0.8, y: 0.7 }
+            });
+
+        }, 300);
+
+    }
+
+}
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================= */
+
+        updateSlide();
+
+        updateLives();
+
+        updatePlayer();
+
+        updateEnemy();
+
+    </script>
+
+</body>
+</html>
+
